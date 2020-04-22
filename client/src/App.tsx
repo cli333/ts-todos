@@ -1,13 +1,13 @@
 import React from "react";
-import TodoBanner from "./components/TodoBanner";
-import CreateTodo from "./components/CreateTodo";
+import TodoHeader from "./components/TodoHeader";
+import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
 const App: React.FC = () => {
   return (
     <div>
-      <TodoBanner />
-      <CreateTodo />
+      <TodoHeader />
+      <TodoForm />
       <TodoList />
     </div>
   );

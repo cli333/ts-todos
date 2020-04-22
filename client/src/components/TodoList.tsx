@@ -1,11 +1,19 @@
 import React from "react";
+import { ITodo } from "../interfaces/interfaces";
+import TodoListItem from "./TodoListItem";
+
+const TODOS: ITodo[] = [
+  { id: "1", text: "first todo", completed: false },
+  { id: "2", text: "second todo", completed: true },
+];
 
 const TodoList: React.FC = () => {
   return (
-    <div style={{ border: "2px dotted purple" }}>
-      <h3>Todo list</h3>
-      <ul style={{ border: "1px solid blue" }}></ul>
-    </div>
+    <ul>
+      {TODOS.map((todo: ITodo) => (
+        <TodoListItem key={todo.id} {...todo} />
+      ))}
+    </ul>
   );
 };
 

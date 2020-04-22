@@ -1,42 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
+import { ITodo } from "../interfaces/interfaces";
 import useTodoListItem from "../hooks/useTodoListItem";
 
-interface TodoListItemProps {
-  id: string;
-  text: string;
-}
-
-const TodoListItem: React.FC<TodoListItemProps> = (props) => {
-  const { id, text } = props;
-  const [display, setDisplay] = useState<boolean>(false);
-  const [input, setInput] = useState<string>("");
-  const { handleDelete, handleUpdate } = useTodoListItem(input, setInput);
+const TodoListItem: React.FC<ITodo> = ({ id, text, completed }) => {
+  const [display, setDisplay] = React.useState<boolean>(false);
+  const [inputText, setInputText] = React.useState<string>(text);
+  const [inputCompleted, setInputCompleted] = React.useState<boolean>(
+    completed
+  );
+  const { handleUpdate } = useTodoListItem({ id, text, completed, setDisplay });
 
   return (
-    <li>
-      {text}
-      {display && (
-        <form
-          onSubmit={(e) => {
-            handleUpdate(e, id, input);
-            setDisplay(!display);
-          }}
-        >
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      )}
-      <button onClick={() => setDisplay(!display)}>
-        {!display ? "Update" : "Hide"}
-      </button>
-      <form onSubmit={(e) => handleDelete(e, id)}>
-        <button type="submit">X</button>
-      </form>
-    </li>
+    <div>
+      <span>Id: {id}</span>
+      <span>
+        Text:{" "}
+        <span style={{ textDecoration: completed ? "line-through" : "" }}>
+          {text}
+        </span>
+        {display && (
+          <form onSubmit={(e) => handleUpdate(e)}>
+            <label htmlFor="text">Text</label>
+            <input
+              name="text"
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+            />
+            <label htmlFor="completed">Completed</label>
+            <input
+              name="completed"
+              type="checkbox"
+              checked={inputCompleted}
+              onChange={() => setInputCompleted(!inputCompleted)}
+            />
+            <button>Submit</button>
+          </form>
+        )}
+        <button onClick={() => setDisplay((prevState) => !prevState)}>
+          {display ? "Close Editor" : "Open Editor"}
+        </button>
+      </span>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { Todo } from "../models/todoModels";
+import { Todo } from "../classes/classes";
 
 const TODOS: Todo[] = [];
 
@@ -9,25 +9,29 @@ export const getTodos: RequestHandler = (req, res, next) => {
 
 export const createTodo: RequestHandler = (req, res, next) => {
   const { text } = req.body as { text: string };
-  const newTodo: Todo = { id: Math.random().toString(), text };
+  const newTodo = new Todo(text);
   TODOS.push(newTodo);
   res.status(201).json({ message: "Create todo", newTodo });
 };
 
 export const updateTodo: RequestHandler = (req, res, next) => {
-  const { id } = req.params;
-  const { text } = req.body as { text: string };
+  const { id } = req.params as { id: string };
+  const { text, completed } = req.body as {
+    text?: string;
+    completed?: boolean;
+  };
   const todoIdx = TODOS.findIndex((todo) => todo.id === id);
   if (todoIdx < 0) {
     res.status(201).json({ message: "Todo not found" });
   } else {
-    TODOS.forEach((todo) => (todo.id === id ? (todo.text = text) : todo));
+    text ? (TODOS[todoIdx].text = text) : null;
+    completed ? (TODOS[todoIdx].completed = completed) : null;
     res.status(201).json({ message: "Created todo" });
   }
 };
 
 export const deleteTodo: RequestHandler = (req, res, next) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const todoIdx = TODOS.findIndex((todo) => todo.id === id);
   if (todoIdx < 0) {
     res.status(201).json({ message: "Todo not found" });
