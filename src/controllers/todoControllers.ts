@@ -17,13 +17,14 @@ export const createTodo: RequestHandler = (req, res, next) => {
 export const updateTodo: RequestHandler = (req, res, next) => {
   const { id } = req.params as { id: string };
   const { text, completed } = req.body as {
-    text?: string;
-    completed?: boolean;
+    text: string;
+    completed: boolean;
   };
   const todoIdx = TODOS.findIndex((todo) => todo.id === id);
   if (todoIdx < 0) {
     res.status(201).json({ message: "Todo not found" });
   } else {
+    console.log("inside the update", { text, completed });
     text ? (TODOS[todoIdx].text = text) : null;
     completed ? (TODOS[todoIdx].completed = completed) : null;
     res.status(201).json({ message: "Created todo" });

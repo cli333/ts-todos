@@ -1,18 +1,16 @@
 import React from "react";
 import { ITodo } from "../interfaces/interfaces";
 import TodoListItem from "./TodoListItem";
-
-const TODOS: ITodo[] = [
-  { id: "1", text: "first todo", completed: false },
-  { id: "2", text: "second todo", completed: true },
-];
+import { TodoCtx } from "../context/TodoProvider";
 
 const TodoList: React.FC = () => {
+  const todoCtx = React.useContext(TodoCtx);
   return (
     <ul>
-      {TODOS.map((todo: ITodo) => (
-        <TodoListItem key={todo.id} {...todo} />
-      ))}
+      {todoCtx?.todos &&
+        todoCtx?.todos.map((todo: ITodo) => (
+          <TodoListItem key={todo.id} {...todo} />
+        ))}
     </ul>
   );
 };

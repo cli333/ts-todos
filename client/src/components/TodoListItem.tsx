@@ -8,7 +8,12 @@ const TodoListItem: React.FC<ITodo> = ({ id, text, completed }) => {
   const [inputCompleted, setInputCompleted] = React.useState<boolean>(
     completed
   );
-  const { handleUpdate } = useTodoListItem({ id, text, completed, setDisplay });
+  const { handleUpdate, handleDelete } = useTodoListItem({
+    id,
+    text: inputText,
+    completed: inputCompleted,
+    setDisplay,
+  });
 
   return (
     <div>
@@ -34,13 +39,14 @@ const TodoListItem: React.FC<ITodo> = ({ id, text, completed }) => {
               checked={inputCompleted}
               onChange={() => setInputCompleted(!inputCompleted)}
             />
-            <button>Submit</button>
+            <button type="submit">Submit</button>
           </form>
         )}
         <button onClick={() => setDisplay((prevState) => !prevState)}>
           {display ? "Close Editor" : "Open Editor"}
         </button>
       </span>
+      <button onClick={() => handleDelete(id)}>X</button>
     </div>
   );
 };

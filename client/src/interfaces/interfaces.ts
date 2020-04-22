@@ -3,3 +3,8 @@ export interface ITodo {
   text: string;
   completed: false | boolean;
 }
+
+export interface ITodoCtx {
+  todos: ITodo[];
+  getTodos: () => void;
+}
